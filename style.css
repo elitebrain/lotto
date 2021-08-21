@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 body {
   text-align: center;
   -webkit-touch-callout: none;
@@ -8,7 +11,7 @@ body {
   user-select: none;
 }
 .lotto_table {
-  width: 628px;
+  width: 698px;
   margin: auto;
   text-align: left;
   background-color: #44e6;
@@ -66,19 +69,19 @@ body {
 }
 
 .table {
-  height: 400px;
+  height: 518px;
   background-color: #44e6;
 }
 
 .result {
-  width: 608px;
+  width: 698px;
   background-color: #44e6;
   margin-top: 30px;
 }
 
 .row {
   width: 100%;
-  height: 50px;
+  height: 60px;
   margin: 6px 0;
 }
 .result .row {
@@ -87,11 +90,11 @@ body {
 .col {
   display: inline-block;
   vertical-align: middle;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
+  width: 60px;
+  height: 60px;
+  line-height: 56px;
   text-align: center;
-  font-size: 24px;
+  font-size: 28px;
   border-radius: 50%;
   margin: 0 6px;
   background-color: #fff;
@@ -102,19 +105,68 @@ body {
   cursor: pointer;
 }
 .col.active {
-  background: linear-gradient(135deg, transparent, #44e);
+  position: relative;
   color: #fff;
+  font-weight: 500;
+  overflow: hidden;
+}
+.col.active::before {
+  position: absolute;
+  content: "";
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  left: 0;
+  top: 0;
+  box-shadow: 0px 0px 5px 5px rgb(255 255 255 / 20%);
+}
+.col.active::after {
+  position: absolute;
+  content: "";
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  left: 25%;
+  bottom: -30%;
+  box-shadow: 0px 0px 5px 5px rgb(255 255 255 / 20%);
+}
+.col.active.range_1 {
+  background: #fbc400;
+  text-shadow: 0px 0px 3px rgb(73 57 0 / 80%);
+}
+.col.active.range_2 {
+  background: #69c8f2;
+  text-shadow: 0px 0px 3px rgb(0 49 70 / 80%);
+}
+.col.active.range_3 {
+  background: #ff7272;
+  text-shadow: 0px 0px 3px rgb(64 0 0 / 80%);
+}
+.col.active.range_4 {
+  background: #aaa;
+  text-shadow: 0px 0px 3px rgb(61 61 61 / 80%);
+}
+.col.active.range_5 {
+  background: #b0d840;
+  text-shadow: 0px 0px 3px rgb(41 56 0 / 80%);
 }
 .reset_btn,
 .save_btn,
 .remove_btn {
-  display: inline-block;
-  vertical-align: middle;
-  height: 50px;
+  height: 60px;
   border: none;
   margin: 0 6px;
   opacity: 0;
   transition: 0.3s ease-in-out;
+  float: right;
 }
 .reset_btn {
   width: 112px;

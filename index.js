@@ -2,7 +2,8 @@ let lottoTable = document.querySelector(".lotto_table"),
   rndBtn = document.querySelector(".lotto_table > .aside > .rnd_btn"),
   resultRow = document.querySelector(".result > .row:first-child");
 let activeList = [];
-const setResult = value => {
+const setResult = (value) => {
+  console.log(typeof value);
   let idx = -1;
   for (let i = 0; i < resultRow.childElementCount; i++) {
     if (resultRow.children[i].innerText === value) {
@@ -17,6 +18,17 @@ const setResult = value => {
     const col = document.createElement("div");
     col.classList.add("col");
     col.classList.add("active");
+    if (parseInt(value) < 11) {
+      col.classList.add("range_1");
+    } else if (parseInt(value) < 21) {
+      col.classList.add("range_2");
+    } else if (parseInt(value) < 31) {
+      col.classList.add("range_3");
+    } else if (parseInt(value) < 41) {
+      col.classList.add("range_4");
+    } else {
+      col.classList.add("range_5");
+    }
     col.innerText = value;
     resultRow.appendChild(col);
     if (resultRow.childElementCount === 6) {
@@ -57,16 +69,36 @@ const getRandomNum = () => {
   if (resultRow.childElementCount > 0) {
   }
   for (let i = 0; i < cols.length; i++) {
-    setTimeout(() => cols[i].classList.add("active"), i * 100);
+    setTimeout(() => {
+      cols[i].classList.add("active");
+      if (parseInt(cols[i].innerText) < 11) {
+        cols[i].classList.add("range_1");
+      } else if (parseInt(cols[i].innerText) < 21) {
+        cols[i].classList.add("range_2");
+      } else if (parseInt(cols[i].innerText) < 31) {
+        cols[i].classList.add("range_3");
+      } else if (parseInt(cols[i].innerText) < 41) {
+        cols[i].classList.add("range_4");
+      } else {
+        cols[i].classList.add("range_5");
+      }
+    }, i * 100);
     if (rndList.indexOf(i + 1) === -1) {
-      setTimeout(() => cols[i].classList.remove("active"), i * 100 + 300);
+      setTimeout(() => {
+        cols[i].classList.remove("active");
+        cols[i].classList.remove("range_1");
+        cols[i].classList.remove("range_2");
+        cols[i].classList.remove("range_3");
+        cols[i].classList.remove("range_4");
+        cols[i].classList.remove("range_5");
+      }, i * 100 + 300);
     } else {
       setTimeout(() => setResult(cols[i].innerText), 4800);
     }
   }
 };
 
-const removeResult = e => {
+const removeResult = (e) => {
   let el = e.target.parentElement;
   // if (el.previousElementSibling) {
   el.parentElement.removeChild(el);
@@ -81,7 +113,7 @@ const removeResult = e => {
   // }
 };
 
-const saveResult = e => {
+const saveResult = (e) => {
   let el = e.target;
   for (let i = 0; i < 6; i++) {
     if (el.previousSibling) {
@@ -104,7 +136,7 @@ const saveResult = e => {
   resultRow = document.querySelector(".result > .row:first-child");
 };
 
-const resetNumber = gubun => {
+const resetNumber = (gubun) => {
   const selectCols = document.querySelectorAll(".table > .row > .col");
   for (let i = 0; i < selectCols.length; i++) {
     if (selectCols[i].classList.value.indexOf("active") !== -1) {
@@ -149,7 +181,7 @@ const setGrid = () => {
   lottoTable.prepend(body);
 };
 
-const toggleNumber = e => {
+const toggleNumber = (e) => {
   const idx = e.target.classList.value.indexOf("active");
   if (idx === -1) {
     if (resultRow.childElementCount < 6) {
@@ -175,7 +207,7 @@ const toggleNumber = e => {
   }
 };
 
-const setDigitNumber = number => {
+const setDigitNumber = (number) => {
   if (number < 10) {
     return `0${number}`;
   } else {
