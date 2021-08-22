@@ -4,7 +4,10 @@ let isCasting = false;
 let isSaved = false;
 
 const getRandomNum = () => {
-  cancelResult();
+  const activeList = document.querySelectorAll(
+    ".lotto_table .table .col.active"
+  );
+  if (activeList.length > 0) return;
   isCasting = true;
   isSaved = false;
   let cols = document.querySelectorAll(".table .col");
@@ -54,7 +57,7 @@ const saveResult = () => {
   const activeList = document.querySelectorAll(
     ".lotto_table .table .col.active"
   );
-  if (isCasting || activeList.length === 0 || isSaved) return;
+  if (isCasting || activeList.length !== 6 || isSaved) return;
   const newRow = document.createElement("div");
   newRow.classList.add("row");
 
@@ -79,6 +82,8 @@ const saveResult = () => {
     beadDiv.classList.add("bead");
     col.appendChild(beadDiv);
     newRow.appendChild(col);
+    activeList[i].classList.value = "col";
+    activeList[i].removeChild(activeList[i].firstElementChild);
   }
   const deleteCol = document.createElement("button");
   deleteCol.classList.add("delete_btn");
@@ -92,8 +97,10 @@ const saveResult = () => {
 };
 
 const cancelResult = () => {
-  if (isCasting) return;
-  const activeList = document.querySelectorAll(".lotto_table .col.active");
+  const activeList = document.querySelectorAll(
+    ".lotto_table .table .col.active"
+  );
+  if (isCasting || activeList.length !== 6) return;
   for (let i = 0; i < activeList.length; i++) {
     activeList[i].classList.value = "col";
     activeList[i].removeChild(activeList[i].firstElementChild);

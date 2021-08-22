@@ -1,6 +1,9 @@
 * {
   box-sizing: border-box;
 }
+html {
+  font-size: calc(100vw / 37.5);
+}
 body {
   text-align: center;
   -webkit-touch-callout: none;
@@ -9,9 +12,10 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  margin: 0;
 }
 button {
-  font-size: 3vw;
+  font-size: 1.125rem;
 }
 button:hover::before {
   left: 50%;
@@ -49,7 +53,7 @@ button::after {
   width: 100%;
   margin: auto;
   text-align: left;
-  background-color: #44e6;
+  background-color: rgba(209, 190, 222, 0.6);
   border-radius: 20px;
 }
 .lotto_table > .aside {
@@ -80,8 +84,8 @@ button::after {
 }
 .delete_btn {
   position: relative;
-  width: 10vw;
-  height: 10vw;
+  width: 3.75rem;
+  height: 3.75rem;
   white-space: pre-line;
   border: none;
   background: rgba(255, 114, 114, 0.8);
@@ -89,7 +93,7 @@ button::after {
   border-radius: 50%;
   color: #fff;
   font-weight: 700;
-  margin: 1vw;
+  margin: 0.375rem;
   float: right;
   overflow: hidden;
   white-space: nowrap;
@@ -100,8 +104,8 @@ button::after {
 }
 .action_btn {
   position: relative;
-  width: 10vw;
-  height: 10vw;
+  width: 3.75rem;
+  height: 3.75rem;
   white-space: pre-line;
   border: none;
   background: rgba(105, 200, 242, 0.8);
@@ -109,7 +113,7 @@ button::after {
   border-radius: 50%;
   color: #fff;
   font-weight: 700;
-  margin: 1vw;
+  margin: 0.375rem;
   float: right;
   overflow: hidden;
   white-space: nowrap;
@@ -176,7 +180,7 @@ button::after {
   text-align: left;
   overflow: hidden;
   width: 100%;
-  background-color: #44e6;
+  background-color: rgba(209, 190, 222, 0.6);
 }
 
 .result {
@@ -184,7 +188,7 @@ button::after {
 }
 
 .row {
-  width: 84vw;
+  width: 31.5rem;
   margin: auto;
 }
 .result .row {
@@ -194,15 +198,15 @@ button::after {
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  width: 10vw;
-  height: 10vw;
-  line-height: 10vw;
+  width: 3.75rem;
+  height: 3.75rem;
+  line-height: 3.75rem;
   text-align: center;
-  font-size: 5vw;
+  font-size: 1.875rem;
   border-radius: 50%;
-  margin: 1vw;
+  margin: 0.375rem;
   background-color: #fff;
-  color: #44e;
+  color: rgba(209, 190, 222, 1);
   transition: 0.3s ease-in-out;
   overflow: hidden;
 }
