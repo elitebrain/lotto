@@ -136,15 +136,6 @@ const removeResult = (e) => {
       removeData.push(removeItemList[i].innerText);
     }
   }
-  console.log(
-    removeItemList,
-    removeData,
-    JSON.stringify(
-      getLocalStorageData().filter(
-        (v) => v.toString() !== removeData.toString()
-      )
-    )
-  );
   localStorage.setItem(
     "lotto",
     JSON.stringify(
