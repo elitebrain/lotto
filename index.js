@@ -1,60 +1,12 @@
-let lottoTable = document.querySelector(".lotto_table"),
-  rndBtn = document.querySelector(".lotto_table > .aside > .rnd_btn"),
-  resultRow = document.querySelector(".result > .row:first-child");
-let activeList = [];
-const setResult = (value) => {
-  console.log(typeof value);
-  let idx = -1;
-  for (let i = 0; i < resultRow.childElementCount; i++) {
-    if (resultRow.children[i].innerText === value) {
-      idx = i;
-    }
-  }
-  if (idx !== -1) {
-    resultRow.removeChild(
-      document.querySelector(`.result > .row > .col:nth-child(${idx + 1})`)
-    );
-  } else {
-    const col = document.createElement("div");
-    col.classList.add("col");
-    col.classList.add("active");
-    if (parseInt(value) < 11) {
-      col.classList.add("range_1");
-    } else if (parseInt(value) < 21) {
-      col.classList.add("range_2");
-    } else if (parseInt(value) < 31) {
-      col.classList.add("range_3");
-    } else if (parseInt(value) < 41) {
-      col.classList.add("range_4");
-    } else {
-      col.classList.add("range_5");
-    }
-    col.innerText = value;
-    resultRow.appendChild(col);
-    if (resultRow.childElementCount === 6) {
-      // const saveBtn = document.createElement("button");
-      // saveBtn.classList.add("save_btn");
-      // saveBtn.innerText = "Save";
-      // saveBtn.addEventListener("click", saveResult);
-      // resultRow.appendChild(saveBtn);
-      const removeBtn = document.createElement("button");
-      removeBtn.classList.add("remove_btn");
-      removeBtn.innerText = "Remove";
-      removeBtn.addEventListener("click", removeResult);
-      resultRow.appendChild(removeBtn);
-    }
-  }
-};
+let lottoTable = document.querySelector(".lotto_table");
+
+let isCasting = false;
+let isSaved = false;
 
 const getRandomNum = () => {
-  const newRow = document.createElement("div");
-  newRow.classList.add("row");
-  const resultEl = document.querySelector(".result");
-  resultEl.prepend(newRow);
-  resultRow = document.querySelector(".result > .row:first-child");
-  const spinFrame = document.querySelector(".aside > .spin_frame");
-  spinFrame.style.display = "block";
-  setTimeout(() => (spinFrame.style.display = "none"), 4800);
+  cancelResult();
+  isCasting = true;
+  isSaved = false;
   let cols = document.querySelectorAll(".table .col");
   const rndList = [];
   for (let i = 0; i < 6; i++) {
@@ -65,19 +17,19 @@ const getRandomNum = () => {
       i--;
     }
   }
-  console.log("rndList", rndList);
-  if (resultRow.childElementCount > 0) {
-  }
   for (let i = 0; i < cols.length; i++) {
     setTimeout(() => {
       cols[i].classList.add("active");
-      if (parseInt(cols[i].innerText) < 11) {
+      const beadDiv = document.createElement("div");
+      beadDiv.classList.add("bead");
+      cols[i].appendChild(beadDiv);
+      if (parseInt(cols[i].innerText, 10) < 11) {
         cols[i].classList.add("range_1");
-      } else if (parseInt(cols[i].innerText) < 21) {
+      } else if (parseInt(cols[i].innerText, 10) < 21) {
         cols[i].classList.add("range_2");
-      } else if (parseInt(cols[i].innerText) < 31) {
+      } else if (parseInt(cols[i].innerText, 10) < 31) {
         cols[i].classList.add("range_3");
-      } else if (parseInt(cols[i].innerText) < 41) {
+      } else if (parseInt(cols[i].innerText, 10) < 41) {
         cols[i].classList.add("range_4");
       } else {
         cols[i].classList.add("range_5");
@@ -91,68 +43,66 @@ const getRandomNum = () => {
         cols[i].classList.remove("range_3");
         cols[i].classList.remove("range_4");
         cols[i].classList.remove("range_5");
+        cols[i].removeChild(cols[i].firstElementChild);
       }, i * 100 + 300);
-    } else {
-      setTimeout(() => setResult(cols[i].innerText), 4800);
     }
+  }
+  setInterval(() => (isCasting = false), 4800);
+};
+
+const saveResult = () => {
+  const activeList = document.querySelectorAll(
+    ".lotto_table .table .col.active"
+  );
+  if (isCasting || activeList.length === 0 || isSaved) return;
+  const newRow = document.createElement("div");
+  newRow.classList.add("row");
+
+  for (let i = 0; i < activeList.length; i++) {
+    const col = document.createElement("div");
+    col.classList.add("col");
+    col.classList.add("active");
+    const value = activeList[i].innerText;
+    if (parseInt(value, 10) < 11) {
+      col.classList.add("range_1");
+    } else if (parseInt(value, 10) < 21) {
+      col.classList.add("range_2");
+    } else if (parseInt(value, 10) < 31) {
+      col.classList.add("range_3");
+    } else if (parseInt(value, 10) < 41) {
+      col.classList.add("range_4");
+    } else {
+      col.classList.add("range_5");
+    }
+    col.innerText = value;
+    const beadDiv = document.createElement("div");
+    beadDiv.classList.add("bead");
+    col.appendChild(beadDiv);
+    newRow.appendChild(col);
+  }
+  const deleteCol = document.createElement("button");
+  deleteCol.classList.add("delete_btn");
+  deleteCol.innerText = "삭제";
+  deleteCol.addEventListener("click", removeResult);
+
+  newRow.appendChild(deleteCol);
+  const resultEl = document.querySelector(".result");
+  resultEl.prepend(newRow);
+  isSaved = true;
+};
+
+const cancelResult = () => {
+  if (isCasting) return;
+  const activeList = document.querySelectorAll(".lotto_table .col.active");
+  for (let i = 0; i < activeList.length; i++) {
+    activeList[i].classList.value = "col";
+    activeList[i].removeChild(activeList[i].firstElementChild);
   }
 };
 
 const removeResult = (e) => {
   let el = e.target.parentElement;
-  // if (el.previousElementSibling) {
   el.parentElement.removeChild(el);
-  // } else {
-  //   const len = el.childElementCount;
-  //   for (let i = 0; i < len; i++) {
-  //     if (el.firstChild) {
-  //       el.removeChild(el.firstChild);
-  //     }
-  //   }
-  //   resetNumber();
-  // }
-};
-
-const saveResult = (e) => {
-  let el = e.target;
-  for (let i = 0; i < 6; i++) {
-    if (el.previousSibling) {
-      el.previousSibling.classList.add("active");
-      el = el.previousSibling;
-    }
-  }
-  e.target.parentElement.removeChild(e.target);
-  resetNumber("save");
-  //   const selectCols = document.querySelectorAll(".table > .row > .col");
-  //   for (let i = 0; i < selectCols.length; i++) {
-  //     if (selectCols[i].classList.value.indexOf("active") !== -1) {
-  //       selectCols[i].classList.remove("active");
-  //     }
-  //   }
-  const newRow = document.createElement("div");
-  newRow.classList.add("row");
-  const resultEl = document.querySelector(".result");
-  resultEl.prepend(newRow);
-  resultRow = document.querySelector(".result > .row:first-child");
-};
-
-const resetNumber = (gubun) => {
-  const selectCols = document.querySelectorAll(".table > .row > .col");
-  for (let i = 0; i < selectCols.length; i++) {
-    if (selectCols[i].classList.value.indexOf("active") !== -1) {
-      selectCols[i].classList.remove("active");
-    }
-  }
-  if (gubun === "reset") {
-    for (let j = 0; j < 8; j++) {
-      if (resultRow.firstChild) {
-        resultRow.removeChild(resultRow.firstChild);
-      }
-    }
-  }
-  activeList = [];
-  const resetBtn = document.querySelector(".reset_btn");
-  resetBtn.classList.remove("active");
 };
 
 const setGrid = () => {
@@ -166,45 +116,32 @@ const setGrid = () => {
         const col = document.createElement("div");
         col.classList.add("col");
         col.innerText = `${setDigitNumber(i * 7 + (j + 1))}`;
-        // col.addEventListener("click", toggleNumber);
         row.appendChild(col);
       } else if (i * 7 + (j + 1) === 46) {
         const button = document.createElement("button");
-        button.classList.add("reset_btn");
-        button.innerText = "Reset";
-        button.addEventListener("click", () => resetNumber("reset"));
+        button.classList.add("action_btn");
+        button.classList.add("cancel_btn");
+        button.innerText = "취소";
+        button.addEventListener("click", cancelResult);
+        row.appendChild(button);
+      } else if (i * 7 + (j + 1) === 47) {
+        const button = document.createElement("button");
+        button.classList.add("action_btn");
+        button.classList.add("save_btn");
+        button.innerText = "저장";
+        button.addEventListener("click", saveResult);
+        row.appendChild(button);
+      } else if (i * 7 + (j + 1) === 48) {
+        const button = document.createElement("button");
+        button.classList.add("action_btn");
+        button.innerText = "뽑기";
+        button.addEventListener("click", getRandomNum);
         row.appendChild(button);
       }
     }
     body.appendChild(row);
   }
   lottoTable.prepend(body);
-};
-
-const toggleNumber = (e) => {
-  const idx = e.target.classList.value.indexOf("active");
-  if (idx === -1) {
-    if (resultRow.childElementCount < 6) {
-      e.target.classList.add("active");
-      setResult(e.target.innerText);
-    }
-  } else {
-    e.target.classList.remove("active");
-    setResult(e.target.innerText);
-  }
-  const cols = document.querySelectorAll(".col");
-  for (let i = 0; i < cols.length; i++) {
-    if (cols[i].classList.value.indexOf("active") !== -1) {
-      activeList.push(cols[i].innerText);
-    }
-  }
-  console.log("activeList", activeList);
-  const resetBtn = document.querySelector(".reset_btn");
-  if (activeList.length > 0) {
-    resetBtn.classList.add("active");
-  } else {
-    resetBtn.classList.remove("active");
-  }
 };
 
 const setDigitNumber = (number) => {
@@ -217,7 +154,5 @@ const setDigitNumber = (number) => {
 
 const init = () => {
   setGrid();
-  rndBtn.innerText = `Get\nRandom\nNumber`;
-  rndBtn.addEventListener("click", getRandomNum);
 };
 init();

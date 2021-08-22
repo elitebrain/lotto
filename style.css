@@ -10,8 +10,43 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+button {
+  font-size: 3vw;
+}
+button:hover::before {
+  left: 50%;
+}
+button::before {
+  position: absolute;
+  content: "";
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  left: 0;
+  top: 0;
+  box-shadow: 0px 0px 5px 5px rgb(255 255 255 / 20%);
+  transition: 0.3s ease-in-out;
+}
+button::after {
+  position: absolute;
+  content: "";
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  left: 25%;
+  bottom: -30%;
+  box-shadow: 0px 0px 5px 5px rgb(255 255 255 / 20%);
+}
 .lotto_table {
-  width: 698px;
+  width: 100%;
   margin: auto;
   text-align: left;
   background-color: #44e6;
@@ -43,74 +78,65 @@ body {
   height: 3px;
   background-color: #3f3;
 }
-.aside > .rnd_btn {
-  width: 120px;
-  height: 120px;
+.delete_btn {
+  position: relative;
+  width: 10vw;
+  height: 10vw;
   white-space: pre-line;
   border: none;
-  background: radial-gradient(#4f4, #4b4);
+  background: rgba(255, 114, 114, 0.8);
+  text-shadow: 0px 0px 3px rgb(64 0 0 / 80%);
   border-radius: 50%;
   color: #fff;
   font-weight: 700;
-  margin-left: 20px;
-}
-.aside > .rnd_btn:hover {
-  cursor: pointer;
-  background: radial-gradient(#4b4, #4f4);
-}
-.table,
-.result {
-  display: inline-block;
-  vertical-align: middle;
-  padding: 25px 10px;
-  border-radius: 20px;
-  text-align: left;
+  margin: 1vw;
+  float: right;
   overflow: hidden;
+  white-space: nowrap;
 }
-
-.table {
-  height: 518px;
-  background-color: #44e6;
-}
-
-.result {
-  width: 698px;
-  background-color: #44e6;
-  margin-top: 30px;
-}
-
-.row {
-  width: 100%;
-  height: 60px;
-  margin: 6px 0;
-}
-.result .row {
-  animation: scale 0.5s ease, raider 4.8s ease 0.5s;
-}
-.col {
-  display: inline-block;
-  vertical-align: middle;
-  width: 60px;
-  height: 60px;
-  line-height: 56px;
-  text-align: center;
-  font-size: 28px;
-  border-radius: 50%;
-  margin: 0 6px;
-  background-color: #fff;
-  color: #44e;
-  transition: 0.3s ease-in-out;
-}
-.col:hover {
+.delete_btn:hover {
   cursor: pointer;
+  background: rgba(255, 114, 114, 1);
 }
-.col.active {
+.action_btn {
   position: relative;
+  width: 10vw;
+  height: 10vw;
+  white-space: pre-line;
+  border: none;
+  background: rgba(105, 200, 242, 0.8);
+  text-shadow: 0px 0px 3px rgb(41 56 0 / 80%);
+  border-radius: 50%;
   color: #fff;
-  font-weight: 500;
+  font-weight: 700;
+  margin: 1vw;
+  float: right;
   overflow: hidden;
+  white-space: nowrap;
 }
-.col.active::before {
+.action_btn:hover {
+  background: rgba(105, 200, 242, 1);
+}
+.action_btn.save_btn {
+  background: rgba(176, 216, 64, 0.8);
+}
+.action_btn.save_btn:hover {
+  background: rgba(176, 216, 64, 1);
+}
+.action_btn.cancel_btn {
+  background: rgba(255, 114, 114, 0.8);
+}
+.action_btn.cancel_btn:hover {
+  background: rgba(255, 114, 114, 1);
+}
+.bead {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.bead::before {
   position: absolute;
   content: "";
   width: 50%;
@@ -124,7 +150,7 @@ body {
   top: 0;
   box-shadow: 0px 0px 5px 5px rgb(255 255 255 / 20%);
 }
-.col.active::after {
+.bead::after {
   position: absolute;
   content: "";
   width: 50%;
@@ -137,6 +163,57 @@ body {
   left: 25%;
   bottom: -30%;
   box-shadow: 0px 0px 5px 5px rgb(255 255 255 / 20%);
+}
+.action_btn:hover {
+  cursor: pointer;
+}
+.table,
+.result {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 25px 10px;
+  border-radius: 20px;
+  text-align: left;
+  overflow: hidden;
+  width: 100%;
+  background-color: #44e6;
+}
+
+.result {
+  margin-top: 30px;
+}
+
+.row {
+  width: 84vw;
+  margin: auto;
+}
+.result .row {
+  animation: fadein 1s ease-in-out;
+}
+.col {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 10vw;
+  height: 10vw;
+  line-height: 10vw;
+  text-align: center;
+  font-size: 5vw;
+  border-radius: 50%;
+  margin: 1vw;
+  background-color: #fff;
+  color: #44e;
+  transition: 0.3s ease-in-out;
+  overflow: hidden;
+}
+.col:hover {
+  cursor: pointer;
+}
+.col.active {
+  position: relative;
+  color: #fff;
+  font-weight: 500;
+  overflow: hidden;
 }
 .col.active.range_1 {
   background: #fbc400;
@@ -158,44 +235,14 @@ body {
   background: #b0d840;
   text-shadow: 0px 0px 3px rgb(41 56 0 / 80%);
 }
-.reset_btn,
-.save_btn,
-.remove_btn {
-  height: 60px;
-  border: none;
-  margin: 0 6px;
-  opacity: 0;
-  transition: 0.3s ease-in-out;
-  float: right;
-}
-.reset_btn {
-  width: 112px;
-  font-size: 24px;
-  background-color: #44e;
-  color: #eaeaea;
-  border-radius: 20px;
-}
-.save_btn,
-.remove_btn {
-  width: 90px;
-  font-size: 18px;
-  opacity: 1;
-  color: #fff;
-  border-radius: 10px;
-}
-.save_btn {
-  background-color: #4e4;
-}
-.remove_btn {
-  background-color: #e44;
-}
-.reset_btn.active {
-  opacity: 1;
-}
-.reset_btn:hover,
-.remove_btn:hover,
-.save_btn:hover {
-  cursor: pointer;
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes spin {
   from {
