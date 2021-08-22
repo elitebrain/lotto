@@ -53,7 +53,24 @@ const getRandomNum = () => {
   setInterval(() => (isCasting = false), 4800);
 };
 
+const getLocalStorageData = () => {
+  const localStorageData = localStorage.getItem("lotto");
+  if (localStorageData) {
+    return JSON.parse(localStorageData);
+  } else {
+    return [];
+  }
+};
+
+const saveResultLocalStorage = (saveData) => {
+  localStorage.setItem(
+    "lotto",
+    JSON.stringify([...getLocalStorageData(), saveData])
+  );
+};
+
 const saveResult = () => {
+  const saveData = [];
   const activeList = document.querySelectorAll(
     ".lotto_table .table .col.active"
   );
@@ -66,6 +83,7 @@ const saveResult = () => {
     col.classList.add("col");
     col.classList.add("active");
     const value = activeList[i].innerText;
+    saveData.push(value);
     if (parseInt(value, 10) < 11) {
       col.classList.add("range_1");
     } else if (parseInt(value, 10) < 21) {
@@ -93,6 +111,7 @@ const saveResult = () => {
   newRow.appendChild(deleteCol);
   const resultEl = document.querySelector(".result");
   resultEl.prepend(newRow);
+  saveResultLocalStorage(saveData);
   isSaved = true;
 };
 
@@ -110,6 +129,30 @@ const cancelResult = () => {
 const removeResult = (e) => {
   let el = e.target.parentElement;
   el.parentElement.removeChild(el);
+  const removeData = [];
+  const removeItemList = el.children;
+  for (let i = 0; i < removeItemList.length; i++) {
+    if (/^[0-9]/g.test(removeItemList[i].innerText)) {
+      removeData.push(removeItemList[i].innerText);
+    }
+  }
+  console.log(
+    removeItemList,
+    removeData,
+    JSON.stringify(
+      getLocalStorageData().filter(
+        (v) => v.toString() !== removeData.toString()
+      )
+    )
+  );
+  localStorage.setItem(
+    "lotto",
+    JSON.stringify(
+      getLocalStorageData().filter(
+        (v) => v.toString() !== removeData.toString()
+      )
+    )
+  );
 };
 
 const setGrid = () => {
@@ -159,7 +202,46 @@ const setDigitNumber = (number) => {
   }
 };
 
+const setLocalStorageData = () => {
+  const localStorageData = JSON.parse(localStorage.getItem("lotto"));
+  for (let i = 0; i < localStorageData.length; i++) {
+    const newRow = document.createElement("div");
+    newRow.classList.add("row");
+    for (let j = 0; j < localStorageData[i].length; j++) {
+      const col = document.createElement("div");
+      col.classList.add("col");
+      col.classList.add("active");
+      const value = localStorageData[i][j];
+      if (parseInt(value, 10) < 11) {
+        col.classList.add("range_1");
+      } else if (parseInt(value, 10) < 21) {
+        col.classList.add("range_2");
+      } else if (parseInt(value, 10) < 31) {
+        col.classList.add("range_3");
+      } else if (parseInt(value, 10) < 41) {
+        col.classList.add("range_4");
+      } else {
+        col.classList.add("range_5");
+      }
+      col.innerText = value;
+      const beadDiv = document.createElement("div");
+      beadDiv.classList.add("bead");
+      col.appendChild(beadDiv);
+      newRow.appendChild(col);
+    }
+    const deleteCol = document.createElement("button");
+    deleteCol.classList.add("delete_btn");
+    deleteCol.innerText = "삭제";
+    deleteCol.addEventListener("click", removeResult);
+
+    newRow.appendChild(deleteCol);
+    const resultEl = document.querySelector(".result");
+    resultEl.prepend(newRow);
+  }
+};
+
 const init = () => {
   setGrid();
+  setLocalStorageData();
 };
 init();
